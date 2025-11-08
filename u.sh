@@ -1,10 +1,5 @@
 #!/bin/bash
 
-# ====================================================================
-# 專案 Git 更新腳本 - Lab5
-# 用途: 一鍵將所有本地改動提交 (Commit) 並推送到 (Push) GitHub
-# ====================================================================
-
 # 1. 定義變數
 REPO_DIR="$(dirname "$0")" # 取得腳本所在的目錄（即 Lab5 專案根目錄）
 COMMIT_MESSAGE=""
@@ -35,9 +30,6 @@ fi
 # a. 將所有更改加入暫存區 (包括新增、修改、刪除)
 echo "1. 正在暫存所有檔案 (git add .)..."
 git add .
-
-# git config --global user.email "zouyuoz0720@gmail.com"
-# git config --global user.name "zouyuoz"
 
 # b. 提交更改
 echo "2. 正在提交更改 (git commit -m \"$COMMIT_MESSAGE\")..."
