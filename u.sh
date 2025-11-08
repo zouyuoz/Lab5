@@ -39,7 +39,7 @@ git add .
 # git config --global user.email "zouyuoz0720@gmail.com"
 # git config --global user.name "zouyuoz"
 
-# b. 提交更改 fffff
+# b. 提交更改
 echo "2. 正在提交更改 (git commit -m \"$COMMIT_MESSAGE\")..."
 if git commit -m "$COMMIT_MESSAGE"; then
     # c. 推送到遠端倉庫
