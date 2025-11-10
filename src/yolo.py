@@ -250,7 +250,7 @@ class ODModel(nn.Module):
         self.num_classes = num_classes
         self.num_anchors = num_anchors
         #################YOU CAN CHANGE TO ANOTHER BACKBONE########################
-        self.backbone = Backbone(pretrained=pretrained, model_name="timm/darknet53.c2ns_in1k")
+        self.backbone = Backbone(pretrained=pretrained, model_name="timm/efficientnet_b0")
         ###########################################################################
         
         self.head = YOLOv3Head(num_classes=num_classes, num_anchors=num_anchors)
