@@ -47,10 +47,10 @@ class BoxLoss(nn.Module):
 
         # coordinate offset for each grid cell
         grid_range = torch.arange(grid, device=device, dtype=dtype)
-        # grid_y, grid_x are grid indices (0 to grid-1)
         grid_y, grid_x = torch.meshgrid(grid_range, grid_range, indexing='ij')
-        grid_x = grid_x.view(1, grid, grid, 1, 1)
-        grid_y = grid_y.view(1, grid, grid, 1, 1)
+        # 修正: 將網格索引塑形為 [1, grid, grid, 1] 以正確與 pred_tx ([B, H, W, A]) 廣播
+        grid_x = grid_x.view(1, grid, grid, 1) 
+        grid_y = grid_y.view(1, grid, grid, 1)
 
         if self.type == 'giou':
             ##################YOUR CODE HERE##########################
@@ -62,7 +62,7 @@ class BoxLoss(nn.Module):
             pred_th = pred_boxes[..., 3]
 
             # Decoded center coordinates (normalized 0-1)
-            pred_cx = (torch.sigmoid(pred_tx) + grid_x) / grid
+            pred_cx = (torch.sigmoid(pred_tx) + grid_x) / grid 
             pred_cy = (torch.sigmoid(pred_ty) + grid_y) / grid
 
             # Decoded width/height (normalized 0-1)
