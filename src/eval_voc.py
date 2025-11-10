@@ -124,9 +124,9 @@ def voc_eval(
         rec = tp / float(npos)
         prec = tp / np.maximum(tp + fp, np.finfo(np.float64).eps)
         ap = voc_ap(rec, prec, use_07_metric)
-        print("---class {} ap {}---".format(class_, ap))
+        print(f"{ap:.5f} AP of class {class_}")
         aps += [ap]
-    print("---map {}---".format(np.mean(aps)))
+    print(f"--- MAP: {np.mean(aps):.5f} ---")
     return aps
 
 
