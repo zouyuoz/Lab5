@@ -177,8 +177,8 @@ class DetectionLossAdvanced(nn.Module):
                 total_box += box_loss_map[pos_mask].sum()
 
                 if self.use_varifocal:
-                    q_target = torch.zeros_like(pred_obj)
-                    q_target[pos_mask] = iou_map[pos_mask]
+                    q_target = torch.zeros_like(pred_obj, dtype=pred_obj.dtype)
+                    q_target[pos_mask] = iou_map[pos_mask].to(q_target.dtype)
                     vfl = self.vfl(pred_obj, q_target)
                     total_obj_pos += vfl[pos_mask].sum()
                     total_obj_neg += vfl[neg_mask].sum()
