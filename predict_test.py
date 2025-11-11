@@ -1,6 +1,7 @@
 import argparse
 import csv
 from pathlib import Path
+import sys
 from typing import List, Tuple
 
 import cv2
@@ -13,11 +14,16 @@ from src.yolo import getODmodel
 
 
 def parse_args() -> argparse.Namespace:
+
+    default_weights_path = Path("checkpoints/best_detector.pth")
+    if len(sys.argv) > 1 and sys.argv[1] == "map":
+        default_weights_path = Path("checkpoints/best_map_detector.pth")
+
     parser = argparse.ArgumentParser(description="Run YOLOv3 inference on the Kaggle test split.")
     parser.add_argument(
         "--weights",
         type=Path,
-        default=Path("checkpoints/best_detector.pth"),
+        default=default_weights_path,
         help="Path to the trained model weights.",
     )
     parser.add_argument(
