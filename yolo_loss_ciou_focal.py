@@ -254,10 +254,10 @@ class YOLOv3Loss_CIoU_Focal(nn.Module):
         total_obj_loss = total_obj_loss_pos + total_obj_loss_neg
 
         total_loss = (
-            self.lambda_coord * total_box_loss +
-            self.lambda_obj * total_obj_loss +
+            self.lambda_coord * total_box_loss / max(num_pos, 1) +
+            self.lambda_obj * total_obj_loss / max(num_pos, 1) +
             self.lambda_noobj * total_obj_loss_neg +
-            self.lambda_class * total_cls_loss
+            self.lambda_class * total_cls_loss / max(num_pos, 1)
         )
 
         return {
