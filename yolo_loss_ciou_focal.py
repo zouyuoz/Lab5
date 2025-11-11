@@ -253,11 +253,26 @@ class YOLOv3Loss_CIoU_Focal(nn.Module):
 
         total_obj_loss = total_obj_loss_pos + total_obj_loss_neg
 
+        pos = max(total_num_pos, 1)
+        neg = max(total_num_neg, 1)
+        B   = predictions[0].shape[0]
+        
+        # 推薦做法：正樣本取 mean；負樣本只做 down-weight（或按 pos/neg 比例縮）
+        box_loss  = total_box_loss      / pos
+        obj_pos   = total_obj_loss_pos  / pos
+        cls_loss  = total_cls_loss      / pos
+        
+        # 二選一（擇一即可）：
+        # A) 固定 down-weight（簡單穩定）
+        # obj_neg   = self.lambda_noobj * total_obj_loss_neg
+        # B) 按比例縮放（更平衡，early epoch 更穩）
+        obj_neg = self.lambda_noobj * (pos / neg) * total_obj_loss_neg
+        
         total_loss = (
-            self.lambda_coord * total_box_loss / max(num_pos, 1) +
-            self.lambda_obj * total_obj_loss / max(num_pos, 1) +
-            self.lambda_noobj * total_obj_loss_neg +
-            self.lambda_class * total_cls_loss / max(num_pos, 1)
+            self.lambda_coord * box_loss +
+            self.lambda_obj   * obj_pos  +
+            obj_neg +
+            self.lambda_class * cls_loss
         )
 
         return {
@@ -268,4 +283,5 @@ class YOLOv3Loss_CIoU_Focal(nn.Module):
             "cls": total_cls_loss,
             "num_pos": torch.tensor(total_num_pos, device=device),
             "num_neg": torch.tensor(total_num_neg, device=device),
+            "B": B,
         }

@@ -56,11 +56,7 @@ def voc_eval(
         pred = preds[class_]  # [[image_id,confidence,x1,y1,x2,y2],...]
         if len(pred) == 0:  # No predictions made for this class
             ap = 0.0
-            print(
-                "---class {} ap {}--- (no predictions for this class)".format(
-                    class_, ap
-                )
-            )
+            print(f"{ap:.5f} AP of class {class_} (no predictions for this class)")
             aps += [ap]
             continue
         image_ids = [x[0] for x in pred]
@@ -78,7 +74,7 @@ def voc_eval(
             if key2 == class_:
                 npos += len(target[(key1, key2)])
         if npos == 0:
-            print(f"---class {class_} ap 0.0--- (no ground truth instances)")
+            print(f"0.00000 AP of class {class_} (no ground truth instances)")
             aps += [0.0]
             continue
         nd = len(image_ids)
