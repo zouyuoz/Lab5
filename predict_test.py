@@ -17,6 +17,7 @@ def parse_args() -> argparse.Namespace:
 
     default_weights_path = Path("checkpoints/best_detector.pth")
     if len(sys.argv) > 1 and sys.argv[1] == "map":
+        print("using map")
         default_weights_path = Path("checkpoints/best_map_detector.pth")
 
     parser = argparse.ArgumentParser(description="Run YOLOv3 inference on the Kaggle test split.")
