@@ -155,58 +155,58 @@ class YOLOv3Head(nn.Module):
         # NOTE: 調整為 EfficientNet-B2 的標準通道數: P5=448, P4=144, P3=48
         
         # ==== Scale 1: 13x13 (largest scale - detects largest objects) ====
-        # Input: 448 channels (P5 from EfficientNet-B2)
+        # Input: 352 channels (P5 from EfficientNet-B2.RA_IN1K)
         self.scale1_conv = nn.Sequential(
-            ConvBlock(448, 224, kernel_size=1, padding=0), # 調整輸入通道數為 448
-            ConvBlock(224, 448, kernel_size=3, padding=1),
-            ConvBlock(448, 224, kernel_size=1, padding=0),
-            ConvBlock(224, 448, kernel_size=3, padding=1),
-            ConvBlock(448, 224, kernel_size=1, padding=0), # Output 224 channels for prediction & upsample
+            ConvBlock(352, 176, kernel_size=1, padding=0), # 調整輸入通道數為 352
+            ConvBlock(176, 352, kernel_size=3, padding=1),
+            ConvBlock(352, 176, kernel_size=1, padding=0),
+            ConvBlock(176, 352, kernel_size=3, padding=1),
+            ConvBlock(352, 176, kernel_size=1, padding=0), # Output 176 channels for prediction & upsample
         )
         # Classifier for scale 1
         self.scale1_detect_conv = nn.Sequential(
-            ConvBlock(224, 448, kernel_size=3, padding=1),
-            nn.Conv2d(448, self.output_channels, kernel_size=1, stride=1, padding=0)
+            ConvBlock(176, 352, kernel_size=3, padding=1),
+            nn.Conv2d(352, self.output_channels, kernel_size=1, stride=1, padding=0)
         )
 
         # Upsample for scale 2 (P5 -> P4)
         self.scale_13_upsample = nn.Sequential(
-            ConvBlock(224, 112, kernel_size=1, padding=0),
+            ConvBlock(176, 72, kernel_size=1, padding=0), # 176 -> 72 (為了匹配後續的 144)
             nn.Upsample(scale_factor=2, mode='nearest')
         )
 
         # ==== Scale 2: 26x26 (medium scale - detects medium objects) ====
-        # Input: 144 (P4 from backbone) + 112 (from upsample) = 256
+        # Input: 144 (P4 from backbone) + 72 (from upsample) = 216
         self.scale2_conv = nn.Sequential(
-            ConvBlock(256, 128, kernel_size=1, padding=0), # 調整輸入通道數為 256
-            ConvBlock(128, 256, kernel_size=3, padding=1),
-            ConvBlock(256, 128, kernel_size=1, padding=0),
-            ConvBlock(128, 256, kernel_size=3, padding=1),
-            ConvBlock(256, 128, kernel_size=1, padding=0), # Output 128 channels
+            ConvBlock(216, 108, kernel_size=1, padding=0), # 調整輸入通道數為 216
+            ConvBlock(108, 216, kernel_size=3, padding=1),
+            ConvBlock(216, 108, kernel_size=1, padding=0),
+            ConvBlock(108, 216, kernel_size=3, padding=1),
+            ConvBlock(216, 108, kernel_size=1, padding=0), # Output 108 channels
         )
         self.scale2_detect_conv = nn.Sequential(
-            ConvBlock(128, 256, kernel_size=3, padding=1),
-            nn.Conv2d(256, self.output_channels, kernel_size=1, stride=1, padding=0)
+            ConvBlock(108, 216, kernel_size=3, padding=1),
+            nn.Conv2d(216, self.output_channels, kernel_size=1, stride=1, padding=0)
         )
 
         # Upsample for scale 3 (P4 -> P3)
         self.scale_26_upsample = nn.Sequential(
-            ConvBlock(128, 64, kernel_size=1, padding=0),
+            ConvBlock(108, 54, kernel_size=1, padding=0), # 108 -> 54 (為了匹配後續的 48)
             nn.Upsample(scale_factor=2, mode='nearest')
         )
 
         # ==== Scale 3: 52x52 (smallest scale - detects small objects) ====
-        # Input: 48 (P3 from backbone) + 64 (from upsample) = 112
+        # Input: 48 (P3 from backbone) + 54 (from upsample) = 102
         self.scale3_conv = nn.Sequential(
-            ConvBlock(112, 56, kernel_size=1, padding=0), # 調整輸入通道數為 112
-            ConvBlock(56, 112, kernel_size=3, padding=1),
-            ConvBlock(112, 56, kernel_size=1, padding=0),
-            ConvBlock(56, 112, kernel_size=3, padding=1),
-            ConvBlock(112, 56, kernel_size=1, padding=0), # Output 56 channels
+            ConvBlock(102, 51, kernel_size=1, padding=0), # 調整輸入通道數為 102
+            ConvBlock(51, 102, kernel_size=3, padding=1),
+            ConvBlock(102, 51, kernel_size=1, padding=0),
+            ConvBlock(51, 102, kernel_size=3, padding=1),
+            ConvBlock(102, 51, kernel_size=1, padding=0), # Output 51 channels
         )
         self.scale3_detect_conv = nn.Sequential(
-            ConvBlock(56, 112, kernel_size=3, padding=1),
-            nn.Conv2d(112, self.output_channels, kernel_size=1, stride=1, padding=0)
+            ConvBlock(51, 102, kernel_size=3, padding=1),
+            nn.Conv2d(102, self.output_channels, kernel_size=1, stride=1, padding=0)
         )
         ################################################
     def forward(self, features):
