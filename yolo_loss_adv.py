@@ -51,8 +51,13 @@ class BoxCIoULoss(nn.Module):
     def forward(self, pred_boxes, target_boxes, anchors):
         B, S, _, A, _ = pred_boxes.shape
         device = pred_boxes.device
+        dtype = pred_boxes.dtype # <-- 確保定義了 dtype
         eps = 1e-7
-
+    
+        if isinstance(anchors, list):
+            anchors = torch.tensor(anchors, device=device, dtype=dtype)
+            anchors = anchors.view(1, 1, 1, A, 2)
+        
         gy = torch.arange(S, device=device).view(1, S, 1, 1).expand(B, S, S, A)
         gx = torch.arange(S, device=device).view(1, 1, S, 1).expand(B, S, S, A)
         grid_x = gx.float()
