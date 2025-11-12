@@ -214,3 +214,124 @@ def evaluate(model, eval_loader):
 
     aps = voc_eval(preds, targets, VOC_CLASSES=VOC_CLASSES)
     return aps
+
+@torch.no_grad()
+def evaluate_(model, eval_loader, device=None, conf_thres=0.01, nms_thres=0.90, max_batches=None):
+    """
+    Quick debug evaluator (NOT mAP). 
+    目的：檢查推論分數分佈、是否被閾值/NMS濾光、類別分佈與格式是否正確。
+    
+    Args:
+        model: nn.Module。若有 model.inference(images, conf_thres, nms_thres) 會優先使用。
+        eval_loader: DataLoader，輸出 (images, targets_list) 或 (images, _)
+        device: 例如 'cuda'。若 None 則不搬運。
+        conf_thres: 先設很低（0.01）避免被濾光。
+        nms_thres: 先設很寬（0.90）。
+        max_batches: 只跑前 N 個 batch，用於快速檢查。
+    Returns:
+        summary: dict，包含總計與每批資訊，方便你打印或日後比對。
+    """
+    import torch
+    from collections import Counter, defaultdict
+
+    mdl = model
+    mdl.eval()
+    if device is not None:
+        mdl.to(device)
+
+    batch_infos = []
+    total_kept = 0
+    total_seen = 0
+    score_min, score_max = float('inf'), float('-inf')
+    class_counter = Counter()
+
+    def _run_infer(m, imgs):
+        # 優先用 .inference；否則直接 m(imgs)（假設模型內部已含後處理，若沒有會回 None/空，仍可看出問題）
+        if hasattr(m, "inference") and callable(getattr(m, "inference")):
+            return m.inference(imgs, conf_thres=0.0, nms_thres=nms_thres)  # 先不過濾，外面再用 conf_thres
+        else:
+            return m(imgs)
+
+    for bidx, (images, *rest) in enumerate(eval_loader):
+        if max_batches is not None and bidx >= max_batches:
+            break
+
+        if device is not None:
+            images = images.to(device, non_blocking=True)
+
+        dets = _run_infer(mdl, images)  # 期望: list[len=bs], 每個 [N,6或7]
+        if not isinstance(dets, (list, tuple)):
+            # 若不是 list（例如尚未後處理），直接當作無預測
+            dets = [None] * images.shape[0]
+
+        kept_this_batch = 0
+        per_class_counter = Counter()
+        batch_score_min, batch_score_max = float('inf'), float('-inf')
+
+        for i in range(len(images)):
+            d = dets[i]
+            if d is None or len(d) == 0:
+                continue
+
+            # 解析 score / cls，容錯兩種常見格式：
+            # A: [x,y,w,h,obj,cls_conf,cls]  -> score = obj*cls_conf
+            # B: [x,y,w,h,score,cls]
+            if d.shape[1] >= 7:
+                scores = d[:, 4] * d[:, 5]
+                cls_ids = d[:, 6].long()
+            elif d.shape[1] == 6:
+                scores = d[:, 4]
+                cls_ids = d[:, 5].long()
+            else:
+                # 未知格式，跳過但記下
+                continue
+
+            # 統計分數門檻後留下的數量
+            mask = scores > conf_thres
+            kept = int(mask.sum().item())
+            kept_this_batch += kept
+            total_kept += kept
+            total_seen += int(len(scores))
+
+            if len(scores) > 0:
+                smin = float(scores.min())
+                smax = float(scores.max())
+                batch_score_min = min(batch_score_min, smin)
+                batch_score_max = max(batch_score_max, smax)
+                score_min = min(score_min, smin)
+                score_max = max(score_max, smax)
+
+            # 類別統計（只統計門檻後）
+            if kept > 0:
+                for c in cls_ids[mask].tolist():
+                    per_class_counter[c] += 1
+                    class_counter[c] += 1
+
+        batch_infos.append({
+            "batch_idx": bidx,
+            "kept": kept_this_batch,
+            "score_min": (None if batch_score_min == float('inf') else batch_score_min),
+            "score_max": (None if batch_score_max == float('-inf') else batch_score_max),
+            "per_class": dict(per_class_counter)
+        })
+
+        print(f"[DBG][batch {bidx}] kept>{conf_thres:.2f} = {kept_this_batch}, "
+              f"score_range=[{batch_score_min if batch_score_min!=float('inf') else None}, "
+              f"{batch_score_max if batch_score_max!=float('-inf') else None}], "
+              f"class_hist={dict(per_class_counter)}")
+
+    summary = {
+        "total_batches": len(batch_infos),
+        "total_seen_preds": total_seen,
+        "total_kept_preds": total_kept,
+        "score_range": (None if score_min == float('inf') else score_min,
+                        None if score_max == float('-inf') else score_max),
+        "class_hist": dict(class_counter),
+        "per_batch": batch_infos
+    }
+
+    print(f"[DBG][summary] kept>{conf_thres:.2f} = {total_kept}/{total_seen} "
+          f"({(100*total_kept/max(total_seen,1)):.2f}%), "
+          f"global_score_range={summary['score_range']}, "
+          f"class_hist={summary['class_hist']}")
+    return summary
