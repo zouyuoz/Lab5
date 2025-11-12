@@ -200,7 +200,7 @@ class DetectionLossAdvanced(nn.Module):
         box_loss = total_box / pos
         obj_pos  = total_obj_pos / pos
         cls_loss = total_cls / pos
-        obj_neg  = self.lambda_noobj * total_obj_neg
+        obj_neg  = self.lambda_noobj * max(total_pos,1) / max(total_neg,1) * total_obj_neg
 
         total = (
             self.lambda_coord * box_loss +
