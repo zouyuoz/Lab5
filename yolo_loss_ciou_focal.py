@@ -255,7 +255,6 @@ class YOLOv3Loss_CIoU_Focal(nn.Module):
 
         pos = max(total_num_pos, 1)
         neg = max(total_num_neg, 1)
-        B   = predictions[0].shape[0]
         
         # 推薦做法：正樣本取 mean；負樣本只做 down-weight（或按 pos/neg 比例縮）
         box_loss  = total_box_loss      / pos
@@ -283,5 +282,4 @@ class YOLOv3Loss_CIoU_Focal(nn.Module):
             "cls": total_cls_loss,
             "num_pos": torch.tensor(total_num_pos, device=device),
             "num_neg": torch.tensor(total_num_neg, device=device),
-            "B": B,
         }

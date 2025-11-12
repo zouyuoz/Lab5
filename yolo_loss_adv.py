@@ -2,6 +2,7 @@
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
+from src.yolo import bbox_iou
 
 class FocalLoss(nn.Module):
     def __init__(self, alpha=0.25, gamma=2.0, reduction='none'):
@@ -100,6 +101,64 @@ class BoxCIoULoss(nn.Module):
             return loss, iou.detach().squeeze(-1)
         return loss
 
+# 假設 bbox_iou 已經從 src.yolo 導入
+
+def get_iou_tensor(pred_boxes_raw, target_boxes_encoded, anchors, grid):
+    """
+    Decodes raw predictions and encoded targets and computes the IoU tensor.
+    pred_boxes_raw: [B, H, W, A, 4] raw (tx, ty, tw, th)
+    target_boxes_encoded: [B, H, W, A, 4] encoded (tx, ty, w, h)
+    anchors: list of (w, h) for the anchors at this scale (normalized 0-1)
+    grid: grid size (e.g., 13)
+    """
+    bsz, grid_y, grid_x, num_anchors, _ = pred_boxes_raw.size()
+    device = pred_boxes_raw.device
+    dtype = pred_boxes_raw.dtype
+    
+    # Reshape anchors for broadcasting [1, 1, 1, A, 2]
+    anchors = torch.tensor(anchors, device=device, dtype=dtype).view(1, 1, 1, num_anchors, 2)
+    
+    # Create grid indices [1, H, W, 1]
+    g_range = torch.arange(grid, device=device, dtype=dtype)
+    gy, gx = torch.meshgrid(g_range, g_range, indexing='ij')
+    gx = gx.view(1, grid, grid, 1)
+    gy = gy.view(1, grid, grid, 1)
+
+    # --- 1. Decode Predicted Boxes to (cx, cy, w, h) normalized (0-1) ---
+    pred_tx = pred_boxes_raw[..., 0]
+    pred_ty = pred_boxes_raw[..., 1]
+    pred_tw = pred_boxes_raw[..., 2]
+    pred_th = pred_boxes_raw[..., 3]
+
+    pred_cx = (torch.sigmoid(pred_tx) + gx) / grid
+    pred_cy = (torch.sigmoid(pred_ty) + gy) / grid
+    
+    pred_w = torch.exp(pred_tw.clamp(-10, 10)) * anchors[..., 0] 
+    pred_h = torch.exp(pred_th.clamp(-10, 10)) * anchors[..., 1]
+    
+    # 將預測框塑形成 [N, 4] 格式
+    box1 = torch.stack([pred_cx, pred_cy, pred_w, pred_h], dim=-1).view(-1, 4) 
+
+    # --- 2. Decode Target Boxes to (cx, cy, w, h) normalized (0-1) ---
+    target_tx = target_boxes_encoded[..., 0]
+    target_ty = target_boxes_encoded[..., 1]
+    target_w = target_boxes_encoded[..., 2]
+    target_h = target_boxes_encoded[..., 3]
+    
+    target_cx = (target_tx + gx) / grid
+    target_cy = (target_ty + gy) / grid
+
+    # 將目標框塑形成 [N, 4] 格式
+    box2 = torch.stack([target_cx, target_cy, target_w, target_h], dim=-1).view(-1, 4) 
+    
+    # --- 3. Calculate IoU ---
+    # bbox_iou 返回 [N_box1, N_box2] 的 IoU 矩陣。我們只需要對應框的 IoU (對角線)
+    iou_matrix = bbox_iou(box1, box2) 
+    iou = torch.diag(iou_matrix)
+    
+    # 重塑回 [B, H, W, A]
+    return iou.view(bsz, grid, grid, num_anchors)
+
 class DetectionLossAdvanced(nn.Module):
     def __init__(self,
                  anchors=None,
@@ -152,55 +211,74 @@ class DetectionLossAdvanced(nn.Module):
         total_pos = 0
         total_neg = 0
 
-        for s, pred in enumerate(predictions):
-            gt = targets[s]
-            pred, anchors = self._normalize_pred_and_anchor(pred, gt, self.anchors[s], device)
-
-            B,S,_,A,ch = pred.shape
-            pred_boxes = pred[...,0:4]
-            pred_obj   = pred[...,4]
-            pred_cls   = pred[...,5:]
-
-            tgt_boxes = gt[...,0:4]
-            tgt_obj   = gt[...,4]
-            tgt_cls   = gt[...,5:]
-
-            pos_mask = tgt_obj > 0.5
-            neg_mask = ~pos_mask
-            num_pos = int(pos_mask.sum().item())
-            num_neg = int(neg_mask.sum().item())
+        for pred, gt, anchors in zip(predictions, targets, self.anchors):
+            bsz, grid, _, num_anchors, _ = gt.shape
+            
+            # Reshape prediction: [B, H, W, 75] -> [B, H, W, 3, 25]
+            pred = pred.view(bsz, grid, grid, num_anchors, -1)
+            
+            # 1. Extract components
+            pred_boxes = pred[..., 0:4] # raw: tx, ty, tw, th
+            pred_obj = pred[..., 4]     # raw: obj score (logit)
+            pred_cls = pred[..., 5:]    # raw: class logits
+            
+            tgt_boxes = gt[..., 0:4]    # encoded: tx, ty, w, h
+            tgt_obj = gt[..., 4]        # target: obj mask (1 or 0)
+            tgt_cls = gt[..., 5:]       # target: one-hot class
+            
+            # Identify Positive and Negative Samples
+            pos_mask = tgt_obj.bool()
+            neg_mask = (~pos_mask)
+            
+            # Count samples for normalization
+            num_pos = pos_mask.sum().item()
+            num_neg = neg_mask.sum().item()
+            
             total_pos += num_pos
             total_neg += num_neg
-
+            
+            # --- Box loss (Coordinate Loss) - Only for positive samples ---
             if num_pos > 0:
-                box_loss_map, iou_map = self.box_loss_fn(pred_boxes, tgt_boxes, anchors)
-                total_box += box_loss_map[pos_mask].sum()
-
+                box_loss_full = self.box_loss(
+                    pred_boxes, tgt_boxes, anchors
+                )
+                total_box += box_loss_full[pos_mask].sum()
+                
+            # --- Objectness Loss (VFL / Focal) ---
+            if num_pos > 0 or num_neg > 0:
                 if self.use_varifocal:
-                    q_target = torch.zeros_like(pred_obj, dtype=pred_obj.dtype)
-                    q_target[pos_mask] = iou_map[pos_mask].to(q_target.dtype)
+                    
+                    # 1. 計算 IoU 張量 (q_target)
+                    iou_tensor = get_iou_tensor(pred_boxes, tgt_boxes, anchors, grid)
+                    
+                    # 2. 設置 q_target: 負樣本為 0，正樣本為 IoU
+                    q_target = torch.zeros_like(pred_obj)
+                    if num_pos > 0:
+                        q_target[pos_mask] = iou_tensor[pos_mask] 
+                    
+                    # 3. 計算 VFL 損失
                     vfl = self.vfl(pred_obj, q_target)
                     total_obj_pos += vfl[pos_mask].sum()
                     total_obj_neg += vfl[neg_mask].sum()
-                else:
-                    total_obj_pos += self.focal(pred_obj[pos_mask], tgt_obj[pos_mask]).sum()
-                    total_obj_neg += self.focal(pred_obj[neg_mask], tgt_obj[neg_mask]).sum()
-
-                if tgt_cls.numel() > 0:
-                    total_cls += self.focal(pred_cls[pos_mask], tgt_cls[pos_mask]).sum()
-            else:
-                if self.use_varifocal:
-                    q_target = torch.zeros_like(pred_obj)
-                    vfl = self.vfl(pred_obj, q_target)
-                    total_obj_neg += vfl[neg_mask].sum()
-                else:
-                    total_obj_neg += self.focal(pred_obj[neg_mask], tgt_obj[neg_mask]).sum()
-
+                    
+                else: # Fallback to standard Focal Loss
+                    if num_pos > 0:
+                        total_obj_pos += self.focal(pred_obj[pos_mask], tgt_obj[pos_mask]).sum()
+                    if num_neg > 0:
+                        total_obj_neg += self.focal(pred_obj[neg_mask], tgt_obj[neg_mask]).sum()
+                        
+            # --- Classification Loss - Only for positive samples ---
+            if num_pos > 0 and tgt_cls.numel() > 0:
+                total_cls += self.focal(pred_cls[pos_mask], tgt_cls[pos_mask]).sum()
         pos = max(total_pos, 1)
+        neg = max(total_neg, 1) # <--- 假設 total_neg 在循環中被正確計算
+
         box_loss = total_box / pos
         obj_pos  = total_obj_pos / pos
         cls_loss = total_cls / pos
-        obj_neg  = self.lambda_noobj * max(total_pos,1) / max(total_neg,1) * total_obj_neg
+        
+        # 修正後的 obj_neg 損失：除以總負樣本數 (neg)
+        obj_neg  = self.lambda_noobj * total_obj_neg / neg 
 
         total = (
             self.lambda_coord * box_loss +
@@ -215,6 +293,4 @@ class DetectionLossAdvanced(nn.Module):
             "obj_pos": obj_pos,
             "obj_neg": obj_neg,
             "cls": cls_loss,
-            "num_pos": torch.tensor(total_pos, device=device),
-            "num_neg": torch.tensor(total_neg, device=device),
         }
