@@ -239,7 +239,7 @@ class DetectionLossAdvanced(nn.Module):
             
             # --- Box loss (Coordinate Loss) - Only for positive samples ---
             if num_pos > 0:
-                box_loss_full = self.box_loss(
+                box_loss_full = self.box_loss_fn(
                     pred_boxes, tgt_boxes, anchors
                 )
                 total_box += box_loss_full[pos_mask].sum()
