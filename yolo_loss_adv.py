@@ -158,10 +158,29 @@ def get_iou_tensor(pred_boxes_raw, target_boxes_encoded, anchors, grid):
     # 將目標框塑形成 [N, 4] 格式
     box2 = torch.stack([target_cx, target_cy, target_w, target_h], dim=-1).view(-1, 4) 
     
-    # --- 3. Calculate IoU ---
-    # bbox_iou 返回 [N_box1, N_box2] 的 IoU 矩陣。我們只需要對應框的 IoU (對角線)
-    iou_matrix = bbox_iou(box1, box2) 
-    iou = torch.diag(iou_matrix)
+    # --- 3. Calculate IoU (Point-wise Calculation) ---
+    # 將 [N, 4] 的張量拆解為單一維度 [N] 的張量
+    b1_x1, b1_y1, b1_x2, b1_y2 = box1.split(1, dim=1)
+    b2_x1, b2_y1, b2_x2, b2_y2 = box2.split(1, dim=1)
+    
+    # 計算交集 (Intersection)
+    inter_x1 = torch.max(b1_x1, b2_x1)
+    inter_y1 = torch.max(b1_y1, b2_y1)
+    inter_x2 = torch.min(b1_x2, b2_x2)
+    inter_y2 = torch.min(b1_y2, b2_y2)
+    
+    # 寬高，並確保非負
+    iw = torch.clamp(inter_x2 - inter_x1, min=0)
+    ih = torch.clamp(inter_y2 - inter_y1, min=0)
+    intersection = iw * ih
+    
+    # 計算並集 (Union)
+    area1 = (b1_x2 - b1_x1) * (b1_y2 - b1_y1)
+    area2 = (b2_x2 - b2_x1) * (b2_y2 - b2_y1)
+    union = area1 + area2 - intersection + 1e-7
+    
+    # 點對點 IoU
+    iou = intersection / union
     
     # 重塑回 [B, H, W, A]
     return iou.view(bsz, grid, grid, num_anchors)
