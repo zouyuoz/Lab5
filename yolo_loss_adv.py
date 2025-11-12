@@ -247,6 +247,8 @@ class DetectionLossAdvanced(nn.Module):
                 box_loss_full = self.box_loss_fn(
                     pred_boxes, tgt_boxes, anchors
                 )
+                if isinstance(box_loss_full, (list, tuple)):
+                    box_loss_full = box_loss_full[0]
                 total_box += box_loss_full[pos_mask].sum()
                 
             # --- Objectness Loss (VFL / Focal) ---
