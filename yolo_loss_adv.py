@@ -121,10 +121,12 @@ def get_iou_tensor(pred_boxes_raw, target_boxes_encoded, anchors, grid):
     dtype = pred_boxes_raw.dtype
     
     # Reshape anchors for broadcasting [1, 1, 1, A, 2]
-    anchors = torch.tensor(anchors, device=device, dtype=dtype).view(1, 1, 1, num_anchors, 2)
-    
+    if isinstance(anchors, list):
+        anchors = torch.tensor(anchors, device=device, dtype=torch.float32) 
+        anchors = anchors.view(1, 1, 1, num_anchors, 2)
+        
     # Create grid indices [1, H, W, 1]
-    g_range = torch.arange(grid, device=device, dtype=dtype)
+    g_range = torch.arange(grid, device=device, dtype=torch.float32)
     gy, gx = torch.meshgrid(g_range, g_range, indexing='ij')
     gx = gx.view(1, grid, grid, 1)
     gy = gy.view(1, grid, grid, 1)
@@ -261,7 +263,7 @@ class DetectionLossAdvanced(nn.Module):
                     # 2. 設置 q_target: 負樣本為 0，正樣本為 IoU
                     q_target = torch.zeros_like(pred_obj)
                     if num_pos > 0:
-                        q_target[pos_mask] = iou_tensor[pos_mask] 
+                        q_target[pos_mask] = iou_tensor[pos_mask].to(pred_obj.dtype)
                     
                     # 3. 計算 VFL 損失
                     vfl = self.vfl(pred_obj, q_target)
