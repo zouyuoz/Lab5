@@ -306,12 +306,12 @@ class DetectionLossAdvanced(nn.Module):
         cls_loss = total_cls / pos
         
         # 修正後的 obj_neg 損失：除以總負樣本數 (neg)
-        obj_neg  = self.lambda_noobj * total_obj_neg / neg 
+        obj_neg  = total_obj_neg / neg
 
         total = (
             self.lambda_coord * box_loss +
             self.lambda_obj   * obj_pos  +
-            obj_neg +
+            self.lambda_noobj * obj_neg +
             self.lambda_class * cls_loss
         )
 
