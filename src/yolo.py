@@ -39,108 +39,6 @@ class ConvBlock(nn.Module):
         return self.activation(self.bn(self.conv(x)))
 
 # head for efficientnet_b0
-# class YOLOv3Head(nn.Module):
-#     """
-#     YOLO v3 detection head with FPN-like neck structure.
-#     Performs multi-scale predictions.
-#     """
-#     def __init__(self, num_classes=20, num_anchors=3):
-#         super(YOLOv3Head, self).__init__()
-#         self.num_classes = num_classes
-#         self.num_anchors = num_anchors
-#         self.output_channels = num_anchors * (5 + num_classes)
-#         #################YOUR CODE###################
-#         # ==== Scale 1: 13x13 (largest scale - detects largest objects) ====
-#         # Input: 320 channels (P5 from EfficientNet-B0)
-#         self.scale1_conv = nn.Sequential(
-#             ConvBlock(320, 160, kernel_size=1, padding=0), # 調整輸入通道數為 320, 降低內部通道數以節省記憶體
-#             ConvBlock(160, 320, kernel_size=3, padding=1),
-#             ConvBlock(320, 160, kernel_size=1, padding=0),
-#             ConvBlock(160, 320, kernel_size=3, padding=1),
-#             ConvBlock(320, 160, kernel_size=1, padding=0), # Output 160 channels for prediction & upsample
-#         )
-#         # Classifier for scale 1
-#         self.scale1_detect_conv = nn.Sequential(
-#             ConvBlock(160, 320, kernel_size=3, padding=1),
-#             nn.Conv2d(320, self.output_channels, kernel_size=1, stride=1, padding=0)
-#         )
-
-#         # Upsample for scale 2 (P5 -> P4)
-#         self.scale_13_upsample = nn.Sequential(
-#             ConvBlock(160, 80, kernel_size=1, padding=0),
-#             nn.Upsample(scale_factor=2, mode='nearest')
-#         )
-
-#         # ==== Scale 2: 26x26 (medium scale - detects medium objects) ====
-#         # Input: 112 (P4 from backbone) + 80 (from upsample) = 192
-#         self.scale2_conv = nn.Sequential(
-#             ConvBlock(192, 96, kernel_size=1, padding=0),
-#             ConvBlock(96, 192, kernel_size=3, padding=1),
-#             ConvBlock(192, 96, kernel_size=1, padding=0),
-#             ConvBlock(96, 192, kernel_size=3, padding=1),
-#             ConvBlock(192, 96, kernel_size=1, padding=0), # Output 96 channels
-#         )
-#         self.scale2_detect_conv = nn.Sequential(
-#             ConvBlock(96, 192, kernel_size=3, padding=1),
-#             nn.Conv2d(192, self.output_channels, kernel_size=1, stride=1, padding=0)
-#         )
-
-#         # Upsample for scale 3 (P4 -> P3)
-#         self.scale_26_upsample = nn.Sequential(
-#             ConvBlock(96, 48, kernel_size=1, padding=0),
-#             nn.Upsample(scale_factor=2, mode='nearest')
-#         )
-
-#         # ==== Scale 3: 52x52 (smallest scale - detects small objects) ====
-#         # Input: 40 (P3 from backbone) + 48 (from upsample) = 88
-#         self.scale3_conv = nn.Sequential(
-#             ConvBlock(88, 44, kernel_size=1, padding=0),
-#             ConvBlock(44, 88, kernel_size=3, padding=1),
-#             ConvBlock(88, 44, kernel_size=1, padding=0),
-#             ConvBlock(44, 88, kernel_size=3, padding=1),
-#             ConvBlock(88, 44, kernel_size=1, padding=0), # Output 44 channels
-#         )
-#         self.scale3_detect_conv = nn.Sequential(
-#             ConvBlock(44, 88, kernel_size=3, padding=1),
-#             nn.Conv2d(88, self.output_channels, kernel_size=1, stride=1, padding=0)
-#         )
-#         ################################################
-#     def forward(self, features):
-#         """
-#         Args:
-#             features: Tuple of (feat_13x13, feat_26x26, feat_52x52)
-
-#         Returns:
-#             Tuple of (pred_13x13, pred_26x26, pred_52x52)
-#             Each prediction shape: (B, H, W, num_anchors * (5 + num_classes))
-#         """
-#         feat_13, feat_26, feat_52 = features
-        
-#         # Scale 1: 13x13
-#         x1 = self.scale1_conv(feat_13)
-#         pred_13 = self.scale1_detect_conv(x1)
-#         # Prepare for scale 2
-#         x1_up = self.scale_13_upsample(x1)
-#         # Scale 2: 26x26
-#         x2 = torch.cat([x1_up, feat_26], dim=1)
-#         x2 = self.scale2_conv(x2)
-#         pred_26 = self.scale2_detect_conv(x2)
-
-#         # Prepare for scale 3
-#         x2_up = self.scale_26_upsample(x2)
-
-#         # Scale 3: 52x52
-#         x3 = torch.cat([x2_up, feat_52], dim=1)
-#         x3 = self.scale3_conv(x3)
-#         pred_52 = self.scale3_detect_conv(x3)
-        
-#         # Reshape predictions: (B, C, H, W) -> (B, H, W, C)
-#         pred_13 = pred_13.permute(0, 2, 3, 1).contiguous()
-#         pred_26 = pred_26.permute(0, 2, 3, 1).contiguous()
-#         pred_52 = pred_52.permute(0, 2, 3, 1).contiguous()
-
-#         return pred_13, pred_26, pred_52
-
 class YOLOv3Head(nn.Module):
     """
     YOLO v3 detection head with FPN-like neck structure.
@@ -152,38 +50,35 @@ class YOLOv3Head(nn.Module):
         self.num_anchors = num_anchors
         self.output_channels = num_anchors * (5 + num_classes)
         #################YOUR CODE###################
-        # NOTE: 最終修正：匹配實際輸出的融合通道數
-        # Scale 1 (P5): 352 (正確，不變)
-        # Scale 2 (P4 實際融合): 192 (修正為 216 -> 192)
-        # Scale 3 (P3 實際融合): 96 (修正為 102 -> 96)
-        
-        # ==== Scale 1: 13x13 (P5) (不變，因為 352 已經是正確的) ====
+        # ==== Scale 1: 13x13 (largest scale - detects largest objects) ====
+        # Input: 320 channels (P5 from EfficientNet-B0)
         self.scale1_conv = nn.Sequential(
-            ConvBlock(352, 176, kernel_size=1, padding=0),
-            ConvBlock(176, 352, kernel_size=3, padding=1),
-            ConvBlock(352, 176, kernel_size=1, padding=0),
-            ConvBlock(176, 352, kernel_size=3, padding=1),
-            ConvBlock(352, 176, kernel_size=1, padding=0), # Output 176 channels
+            ConvBlock(320, 160, kernel_size=1, padding=0), # 調整輸入通道數為 320, 降低內部通道數以節省記憶體
+            ConvBlock(160, 320, kernel_size=3, padding=1),
+            ConvBlock(320, 160, kernel_size=1, padding=0),
+            ConvBlock(160, 320, kernel_size=3, padding=1),
+            ConvBlock(320, 160, kernel_size=1, padding=0), # Output 160 channels for prediction & upsample
         )
+        # Classifier for scale 1
         self.scale1_detect_conv = nn.Sequential(
-            ConvBlock(176, 352, kernel_size=3, padding=1),
-            nn.Conv2d(352, self.output_channels, kernel_size=1, stride=1, padding=0)
+            ConvBlock(160, 320, kernel_size=3, padding=1),
+            nn.Conv2d(320, self.output_channels, kernel_size=1, stride=1, padding=0)
         )
 
         # Upsample for scale 2 (P5 -> P4)
         self.scale_13_upsample = nn.Sequential(
-            ConvBlock(176, 72, kernel_size=1, padding=0), # 輸出 72 channels (與 192 的差值匹配)
+            ConvBlock(160, 80, kernel_size=1, padding=0),
             nn.Upsample(scale_factor=2, mode='nearest')
         )
 
-        # ==== Scale 2: 26x26 (P4) ====
-        # 實際融合輸入: 192 (Backbone P4 + Upsample 72)
+        # ==== Scale 2: 26x26 (medium scale - detects medium objects) ====
+        # Input: 112 (P4 from backbone) + 80 (from upsample) = 192
         self.scale2_conv = nn.Sequential(
-            ConvBlock(192, 96, kernel_size=1, padding=0), # 修正為 192
+            ConvBlock(192, 96, kernel_size=1, padding=0),
             ConvBlock(96, 192, kernel_size=3, padding=1),
             ConvBlock(192, 96, kernel_size=1, padding=0),
             ConvBlock(96, 192, kernel_size=3, padding=1),
-            ConvBlock(192, 96, kernel_size=1, padding=0), # Output 96 channels for prediction & upsample
+            ConvBlock(192, 96, kernel_size=1, padding=0), # Output 96 channels
         )
         self.scale2_detect_conv = nn.Sequential(
             ConvBlock(96, 192, kernel_size=3, padding=1),
@@ -192,22 +87,22 @@ class YOLOv3Head(nn.Module):
 
         # Upsample for scale 3 (P4 -> P3)
         self.scale_26_upsample = nn.Sequential(
-            ConvBlock(96, 48, kernel_size=1, padding=0), # 輸出 48 channels (與 96 的差值匹配)
+            ConvBlock(96, 48, kernel_size=1, padding=0),
             nn.Upsample(scale_factor=2, mode='nearest')
         )
 
-        # ==== Scale 3: 52x52 (P3) ====
-        # 實際融合輸入: 48 (Backbone P3) + 48 (from upsample) = 96
+        # ==== Scale 3: 52x52 (smallest scale - detects small objects) ====
+        # Input: 40 (P3 from backbone) + 48 (from upsample) = 88
         self.scale3_conv = nn.Sequential(
-            ConvBlock(96, 48, kernel_size=1, padding=0), # 修正為 96
-            ConvBlock(48, 96, kernel_size=3, padding=1),
-            ConvBlock(96, 48, kernel_size=1, padding=0),
-            ConvBlock(48, 96, kernel_size=3, padding=1),
-            ConvBlock(96, 48, kernel_size=1, padding=0), # Output 48 channels
+            ConvBlock(88, 44, kernel_size=1, padding=0),
+            ConvBlock(44, 88, kernel_size=3, padding=1),
+            ConvBlock(88, 44, kernel_size=1, padding=0),
+            ConvBlock(44, 88, kernel_size=3, padding=1),
+            ConvBlock(88, 44, kernel_size=1, padding=0), # Output 44 channels
         )
         self.scale3_detect_conv = nn.Sequential(
-            ConvBlock(48, 96, kernel_size=3, padding=1),
-            nn.Conv2d(96, self.output_channels, kernel_size=1, stride=1, padding=0)
+            ConvBlock(44, 88, kernel_size=3, padding=1),
+            nn.Conv2d(88, self.output_channels, kernel_size=1, stride=1, padding=0)
         )
         ################################################
     def forward(self, features):
@@ -245,6 +140,112 @@ class YOLOv3Head(nn.Module):
         pred_52 = pred_52.permute(0, 2, 3, 1).contiguous()
 
         return pred_13, pred_26, pred_52
+
+# head for efficientnet_b2
+# class YOLOv3Head(nn.Module):
+#     """
+#     YOLO v3 detection head with FPN-like neck structure.
+#     Performs multi-scale predictions.
+#     """
+#     def __init__(self, num_classes=20, num_anchors=3):
+#         super(YOLOv3Head, self).__init__()
+#         self.num_classes = num_classes
+#         self.num_anchors = num_anchors
+#         self.output_channels = num_anchors * (5 + num_classes)
+#         #################YOUR CODE###################
+#         # NOTE: 最終修正：匹配實際輸出的融合通道數
+#         # Scale 1 (P5): 352 (正確，不變)
+#         # Scale 2 (P4 實際融合): 192 (修正為 216 -> 192)
+#         # Scale 3 (P3 實際融合): 96 (修正為 102 -> 96)
+        
+#         # ==== Scale 1: 13x13 (P5) (不變，因為 352 已經是正確的) ====
+#         self.scale1_conv = nn.Sequential(
+#             ConvBlock(352, 176, kernel_size=1, padding=0),
+#             ConvBlock(176, 352, kernel_size=3, padding=1),
+#             ConvBlock(352, 176, kernel_size=1, padding=0),
+#             ConvBlock(176, 352, kernel_size=3, padding=1),
+#             ConvBlock(352, 176, kernel_size=1, padding=0), # Output 176 channels
+#         )
+#         self.scale1_detect_conv = nn.Sequential(
+#             ConvBlock(176, 352, kernel_size=3, padding=1),
+#             nn.Conv2d(352, self.output_channels, kernel_size=1, stride=1, padding=0)
+#         )
+
+#         # Upsample for scale 2 (P5 -> P4)
+#         self.scale_13_upsample = nn.Sequential(
+#             ConvBlock(176, 72, kernel_size=1, padding=0), # 輸出 72 channels (與 192 的差值匹配)
+#             nn.Upsample(scale_factor=2, mode='nearest')
+#         )
+
+#         # ==== Scale 2: 26x26 (P4) ====
+#         # 實際融合輸入: 192 (Backbone P4 + Upsample 72)
+#         self.scale2_conv = nn.Sequential(
+#             ConvBlock(192, 96, kernel_size=1, padding=0), # 修正為 192
+#             ConvBlock(96, 192, kernel_size=3, padding=1),
+#             ConvBlock(192, 96, kernel_size=1, padding=0),
+#             ConvBlock(96, 192, kernel_size=3, padding=1),
+#             ConvBlock(192, 96, kernel_size=1, padding=0), # Output 96 channels for prediction & upsample
+#         )
+#         self.scale2_detect_conv = nn.Sequential(
+#             ConvBlock(96, 192, kernel_size=3, padding=1),
+#             nn.Conv2d(192, self.output_channels, kernel_size=1, stride=1, padding=0)
+#         )
+
+#         # Upsample for scale 3 (P4 -> P3)
+#         self.scale_26_upsample = nn.Sequential(
+#             ConvBlock(96, 48, kernel_size=1, padding=0), # 輸出 48 channels (與 96 的差值匹配)
+#             nn.Upsample(scale_factor=2, mode='nearest')
+#         )
+
+#         # ==== Scale 3: 52x52 (P3) ====
+#         # 實際融合輸入: 48 (Backbone P3) + 48 (from upsample) = 96
+#         self.scale3_conv = nn.Sequential(
+#             ConvBlock(96, 48, kernel_size=1, padding=0), # 修正為 96
+#             ConvBlock(48, 96, kernel_size=3, padding=1),
+#             ConvBlock(96, 48, kernel_size=1, padding=0),
+#             ConvBlock(48, 96, kernel_size=3, padding=1),
+#             ConvBlock(96, 48, kernel_size=1, padding=0), # Output 48 channels
+#         )
+#         self.scale3_detect_conv = nn.Sequential(
+#             ConvBlock(48, 96, kernel_size=3, padding=1),
+#             nn.Conv2d(96, self.output_channels, kernel_size=1, stride=1, padding=0)
+#         )
+#         ################################################
+#     def forward(self, features):
+#         """
+#         Args:
+#             features: Tuple of (feat_13x13, feat_26x26, feat_52x52)
+
+#         Returns:
+#             Tuple of (pred_13x13, pred_26x26, pred_52x52)
+#             Each prediction shape: (B, H, W, num_anchors * (5 + num_classes))
+#         """
+#         feat_13, feat_26, feat_52 = features
+        
+#         # Scale 1: 13x13
+#         x1 = self.scale1_conv(feat_13)
+#         pred_13 = self.scale1_detect_conv(x1)
+#         # Prepare for scale 2
+#         x1_up = self.scale_13_upsample(x1)
+#         # Scale 2: 26x26
+#         x2 = torch.cat([x1_up, feat_26], dim=1)
+#         x2 = self.scale2_conv(x2)
+#         pred_26 = self.scale2_detect_conv(x2)
+
+#         # Prepare for scale 3
+#         x2_up = self.scale_26_upsample(x2)
+
+#         # Scale 3: 52x52
+#         x3 = torch.cat([x2_up, feat_52], dim=1)
+#         x3 = self.scale3_conv(x3)
+#         pred_52 = self.scale3_detect_conv(x3)
+        
+#         # Reshape predictions: (B, C, H, W) -> (B, H, W, C)
+#         pred_13 = pred_13.permute(0, 2, 3, 1).contiguous()
+#         pred_26 = pred_26.permute(0, 2, 3, 1).contiguous()
+#         pred_52 = pred_52.permute(0, 2, 3, 1).contiguous()
+
+#         return pred_13, pred_26, pred_52
 # ============================================================================
 # NMS for inference
 # ============================================================================
@@ -355,7 +356,8 @@ class ODModel(nn.Module):
         self.num_classes = num_classes
         self.num_anchors = num_anchors
         #################YOU CAN CHANGE TO ANOTHER BACKBONE########################
-        self.backbone = Backbone(pretrained=pretrained, model_name="timm/efficientnet_b2.ra_in1k")
+        self.backbone = Backbone(pretrained=pretrained, model_name="timm/efficientnet_b0.ra_in1k")
+        # self.backbone = Backbone(pretrained=pretrained, model_name="timm/efficientnet_b2.ra_in1k")
         ###########################################################################
         
         self.head = YOLOv3Head(num_classes=num_classes, num_anchors=num_anchors)

@@ -17,6 +17,7 @@ train_data_pipelines = A.Compose([
     A.VerticalFlip(p=0.1),
     # A.Rotate(limit=10, p=0.3, border_mode=cv2.BORDER_CONSTANT),
     # A.RandomBrightnessContrast(p=0.2),
+    A.ColorJitter(brightness=0.1, contrast=0.1, saturation=0.1, hue=0.05, p=0.5),
     A.Normalize(mean=VOC_IMG_MEAN, std=VOC_IMG_STD),
     A.pytorch.ToTensorV2(),
 ], bbox_params=A.BboxParams(
