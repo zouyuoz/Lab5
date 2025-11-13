@@ -356,7 +356,8 @@ class ODModel(nn.Module):
         self.num_classes = num_classes
         self.num_anchors = num_anchors
         #################YOU CAN CHANGE TO ANOTHER BACKBONE########################
-        self.backbone = Backbone(pretrained=pretrained, model_name="timm/efficientnet_b0.ra_in1k")
+        self.backbone = Backbone(pretrained=pretrained, model_name="timm/efficientnet_b0")
+        # self.backbone = Backbone(pretrained=pretrained, model_name="timm/efficientnet_b0.ra_in1k")
         # self.backbone = Backbone(pretrained=pretrained, model_name="timm/efficientnet_b2.ra_in1k")
         ###########################################################################
         
