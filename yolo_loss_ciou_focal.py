@@ -253,33 +253,27 @@ class YOLOv3Loss_CIoU_Focal(nn.Module):
 
         total_obj_loss = total_obj_loss_pos + total_obj_loss_neg
 
-        pos = max(total_num_pos, 1)
-        neg = max(total_num_neg, 1)
-        
-        # 推薦做法：正樣本取 mean；負樣本只做 down-weight（或按 pos/neg 比例縮）
-        box_loss  = total_box_loss      / pos
-        obj_pos   = total_obj_loss_pos  / pos
-        cls_loss  = total_cls_loss      / pos
-        
-        # 二選一（擇一即可）：
-        # A) 固定 down-weight（簡單穩定）
-        # obj_neg   = self.lambda_noobj * total_obj_loss_neg
-        # B) 按比例縮放（更平衡，early epoch 更穩）
-        obj_neg = self.lambda_noobj * (pos / neg) * total_obj_loss_neg
+        pos_denom = max(total_num_pos, 1)
+        neg_denom = max(total_num_neg, 1)
+
+        total_box_loss = total_box_loss / pos_denom
+        total_obj_loss = total_obj_loss_pos / pos_denom
+        total_cls_loss = total_cls_loss / pos_denom
+        total_noobj_loss = total_obj_loss_neg / neg_denom
+
+        # Combined loss
         
         total_loss = (
-            self.lambda_coord * box_loss +
-            self.lambda_obj   * obj_pos  +
-            obj_neg +
-            self.lambda_class * cls_loss
+            self.lambda_coord * total_box_loss +
+            self.lambda_obj * total_obj_loss +
+            self.lambda_noobj * total_noobj_loss +
+            self.lambda_class * total_cls_loss
         )
-
+        
         return {
-            "total": total_loss,
-            "box": total_box_loss,
-            "obj": total_obj_loss,
-            "noobj": total_obj_loss_neg,
-            "cls": total_cls_loss,
-            "num_pos": torch.tensor(total_num_pos, device=device),
-            "num_neg": torch.tensor(total_num_neg, device=device),
+            'total': total_loss,
+            'box': total_box_loss,
+            'obj': total_obj_loss,
+            'noobj': total_noobj_loss,
+            'cls': total_cls_loss,
         }
