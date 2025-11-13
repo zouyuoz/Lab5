@@ -253,27 +253,27 @@ class YOLOv3Loss_CIoU_Focal(nn.Module):
 
         total_obj_loss = total_obj_loss_pos + total_obj_loss_neg
 
-        pos_denom = max(total_num_pos, 1)
-        neg_denom = max(total_num_neg, 1)
+        pos = max(total_num_pos, 1)
+        neg = max(total_num_neg, 1)
 
-        total_box_loss = total_box_loss / pos_denom
-        total_obj_loss = total_obj_loss_pos / pos_denom
-        total_cls_loss = total_cls_loss / pos_denom
-        total_noobj_loss = total_obj_loss_neg / neg_denom
+        box_loss = total_box_loss / pos
+        obj_loss = total_obj_loss_pos / pos
+        cls_loss = total_cls_loss / pos
+        noobj_loss = total_obj_loss_neg / neg
 
         # Combined loss
         
         total_loss = (
-            self.lambda_coord * total_box_loss +
-            self.lambda_obj * total_obj_loss +
-            self.lambda_noobj * total_noobj_loss +
-            self.lambda_class * total_cls_loss
+            self.lambda_coord * box_loss +
+            self.lambda_obj * obj_loss +
+            self.lambda_noobj * noobj_loss +
+            self.lambda_class * cls_loss
         )
         
         return {
-            'total': total_loss,
-            'box': total_box_loss,
-            'obj': total_obj_loss,
-            'noobj': total_noobj_loss,
-            'cls': total_cls_loss,
+            "total": total_loss,
+            "box": total_box_loss,
+            "obj": total_obj_loss,
+            "noobj": total_obj_loss_neg,
+            "cls": total_cls_loss,
         }

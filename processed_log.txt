@@ -1,0 +1,568 @@
+
+Starting epoch 1 / 50
+		Epoch [1/50], Iter [40/129], Loss: total=1.650, box=60.517, obj=9138.057, noobj=9109.483, cls=69.125, num_pos=193.000, num_neg=681215.000, B=64.000
+		Epoch [1/50], Iter [80/129], Loss: total=1.267, box=61.858, obj=3593.677, noobj=3561.534, cls=59.992, num_pos=205.000, num_neg=681203.000, B=64.000
+		Epoch [1/50], Iter [120/129], Loss: total=1.120, box=49.543, obj=2407.514, noobj=2382.907, cls=52.568, num_pos=177.000, num_neg=681231.000, B=64.000
+		Learning Rate for this epoch: 9.990e-04
+		Validation Loss: 1.1624
+		Updating best val loss: 1.16238
+		
+		Starting epoch 2 / 50
+		Epoch [2/50], Iter [40/129], Loss: total=1.135, box=63.162, obj=2029.765, noobj=1999.158, cls=59.053, num_pos=214.000, num_neg=681194.000, B=64.000
+		Epoch [2/50], Iter [80/129], Loss: total=1.029, box=51.220, obj=1554.490, noobj=1530.165, cls=49.155, num_pos=186.000, num_neg=681222.000, B=64.000
+		Epoch [2/50], Iter [120/129], Loss: total=1.011, box=49.974, obj=1391.523, noobj=1365.487, cls=54.264, num_pos=193.000, num_neg=681215.000, B=64.000
+		Learning Rate for this epoch: 9.961e-04
+		Validation Loss: 0.9979
+		Updating best val loss: 0.99785
+		
+		Starting epoch 3 / 50
+		Epoch [3/50], Iter [40/129], Loss: total=0.962, box=49.516, obj=1429.372, noobj=1402.427, cls=49.150, num_pos=199.000, num_neg=681209.000, B=64.000
+		Epoch [3/50], Iter [80/129], Loss: total=0.843, box=34.544, obj=1209.348, noobj=1191.543, cls=36.025, num_pos=156.000, num_neg=681252.000, B=64.000
+		Epoch [3/50], Iter [120/129], Loss: total=1.110, box=79.115, obj=1171.490, noobj=1125.101, cls=70.972, num_pos=270.000, num_neg=681138.000, B=64.000
+		Learning Rate for this epoch: 9.912e-04
+		Validation Loss: 0.9419
+		Updating best val loss: 0.94193
+		
+		Starting epoch 4 / 50
+		Epoch [4/50], Iter [40/129], Loss: total=0.849, box=37.914, obj=1159.333, noobj=1141.326, cls=40.788, num_pos=170.000, num_neg=681238.000, B=64.000
+		Epoch [4/50], Iter [80/129], Loss: total=0.839, box=41.386, obj=1243.573, noobj=1225.833, cls=43.794, num_pos=187.000, num_neg=681221.000, B=64.000
+		Epoch [4/50], Iter [120/129], Loss: total=1.032, box=70.452, obj=1200.207, noobj=1167.803, cls=64.174, num_pos=251.000, num_neg=681157.000, B=64.000
+		Learning Rate for this epoch: 9.843e-04
+		Validation Loss: 0.8903
+		Updating best val loss: 0.89026
+		
+		Starting epoch 5 / 50
+		Epoch [5/50], Iter [40/129], Loss: total=0.891, box=54.152, obj=1178.394, noobj=1157.575, cls=51.912, num_pos=222.000, num_neg=681186.000, B=64.000
+		Epoch [5/50], Iter [80/129], Loss: total=0.804, box=33.888, obj=995.752, noobj=981.896, cls=33.931, num_pos=152.000, num_neg=681256.000, B=64.000
+		Epoch [5/50], Iter [120/129], Loss: total=0.819, box=46.675, obj=1138.964, noobj=1115.314, cls=48.722, num_pos=222.000, num_neg=681186.000, B=64.000
+		Learning Rate for this epoch: 9.756e-04
+		Validation Loss: 0.8423
+		Updating best val loss: 0.84234
+		
+		Evaluating on validation set...
+		---Evaluate model on validation samples---
+		100%|██████████| 60/60 [00:38<00:00,  1.57it/s]
+		0.25262 AP of class aeroplane
+		0.00000 AP of class bicycle (no predictions for this class)
+		0.04873 AP of class bird
+		0.00000 AP of class boat (no predictions for this class)
+		0.00000 AP of class bottle (no predictions for this class)
+		0.00000 AP of class bus (no predictions for this class)
+		0.21911 AP of class car
+		0.27989 AP of class cat
+		0.00000 AP of class chair (no predictions for this class)
+		0.00000 AP of class cow (no predictions for this class)
+		0.24561 AP of class diningtable
+		0.06050 AP of class dog
+		0.00000 AP of class horse (no predictions for this class)
+		0.05447 AP of class motorbike
+		0.30977 AP of class person
+		0.00000 AP of class pottedplant (no predictions for this class)
+		0.00000 AP of class sheep (no predictions for this class)
+		0.00694 AP of class sofa
+		0.00000 AP of class train (no predictions for this class)
+		0.00000 AP of class tvmonitor (no predictions for this class)
+		--- MAP: 0.07388 ---
+		Epoch 5, mAP: 0.0739
+		
+		Starting epoch 6 / 50
+		Epoch [6/50], Iter [40/129], Loss: total=0.710, box=32.988, obj=890.040, noobj=871.650, cls=32.671, num_pos=176.000, num_neg=681232.000, B=64.000
+		Epoch [6/50], Iter [80/129], Loss: total=0.796, box=40.686, obj=1201.409, noobj=1183.795, cls=41.045, num_pos=192.000, num_neg=681216.000, B=64.000
+		Epoch [6/50], Iter [120/129], Loss: total=0.843, box=46.373, obj=1057.370, noobj=1040.296, cls=42.145, num_pos=194.000, num_neg=681214.000, B=64.000
+		Learning Rate for this epoch: 9.649e-04
+		Validation Loss: 0.8235
+		Updating best val loss: 0.82353
+		
+		Starting epoch 7 / 50
+		Epoch [7/50], Iter [40/129], Loss: total=0.661, box=30.000, obj=873.033, noobj=859.069, cls=29.961, num_pos=168.000, num_neg=681240.000, B=64.000
+		Epoch [7/50], Iter [80/129], Loss: total=0.728, box=34.178, obj=1179.176, noobj=1164.285, cls=39.209, num_pos=184.000, num_neg=681224.000, B=64.000
+		Epoch [7/50], Iter [120/129], Loss: total=0.740, box=41.187, obj=979.110, noobj=962.192, cls=34.929, num_pos=196.000, num_neg=681212.000, B=64.000
+		Learning Rate for this epoch: 9.525e-04
+		Validation Loss: 0.8130
+		Updating best val loss: 0.81304
+		
+		Starting epoch 8 / 50
+		Epoch [8/50], Iter [40/129], Loss: total=0.655, box=31.807, obj=974.967, noobj=961.865, cls=25.954, num_pos=169.000, num_neg=681239.000, B=64.000
+		Epoch [8/50], Iter [80/129], Loss: total=0.684, box=31.256, obj=972.858, noobj=959.972, cls=29.818, num_pos=165.000, num_neg=681243.000, B=64.000
+		Epoch [8/50], Iter [120/129], Loss: total=0.767, box=49.613, obj=1014.637, noobj=989.859, cls=44.071, num_pos=241.000, num_neg=681167.000, B=64.000
+		Learning Rate for this epoch: 9.382e-04
+		Validation Loss: 0.8010
+		Updating best val loss: 0.80097
+		
+		Starting epoch 9 / 50
+		Epoch [9/50], Iter [40/129], Loss: total=0.688, box=39.124, obj=1160.343, noobj=1144.189, cls=33.558, num_pos=207.000, num_neg=681201.000, B=64.000
+		Epoch [9/50], Iter [80/129], Loss: total=0.701, box=46.523, obj=863.481, noobj=843.447, cls=34.467, num_pos=229.000, num_neg=681179.000, B=64.000
+		Epoch [9/50], Iter [120/129], Loss: total=0.610, box=27.556, obj=912.906, noobj=903.344, cls=26.702, num_pos=161.000, num_neg=681247.000, B=64.000
+		Learning Rate for this epoch: 9.222e-04
+		Validation Loss: 0.7764
+		Updating best val loss: 0.77636
+		
+		Starting epoch 10 / 50
+		Epoch [10/50], Iter [40/129], Loss: total=0.681, box=34.577, obj=804.699, noobj=791.496, cls=30.910, num_pos=177.000, num_neg=681231.000, B=64.000
+		Epoch [10/50], Iter [80/129], Loss: total=0.744, box=41.995, obj=1204.531, noobj=1188.928, cls=41.856, num_pos=211.000, num_neg=681197.000, B=64.000
+		Epoch [10/50], Iter [120/129], Loss: total=0.615, box=30.956, obj=861.972, noobj=853.911, cls=19.380, num_pos=155.000, num_neg=681253.000, B=64.000
+		Learning Rate for this epoch: 9.046e-04
+		Validation Loss: 0.7666
+		Updating best val loss: 0.76662
+		
+		Evaluating on validation set...
+		---Evaluate model on validation samples---
+		100%|██████████| 60/60 [00:40<00:00,  1.47it/s]
+		0.36366 AP of class aeroplane
+		0.15969 AP of class bicycle
+		0.25715 AP of class bird
+		0.09743 AP of class boat
+		0.01232 AP of class bottle
+		0.14194 AP of class bus
+		0.22973 AP of class car
+		0.58240 AP of class cat
+		0.06772 AP of class chair
+		0.02222 AP of class cow
+		0.39895 AP of class diningtable
+		0.35225 AP of class dog
+		0.39608 AP of class horse
+		0.34085 AP of class motorbike
+		0.42940 AP of class person
+		0.02937 AP of class pottedplant
+		0.03074 AP of class sheep
+		0.20778 AP of class sofa
+		0.42917 AP of class train
+		0.02459 AP of class tvmonitor
+		--- MAP: 0.22867 ---
+		Epoch 10, mAP: 0.2287
+		
+		Starting epoch 11 / 50
+		Epoch [11/50], Iter [40/129], Loss: total=0.626, box=32.101, obj=879.745, noobj=863.408, cls=30.384, num_pos=192.000, num_neg=681216.000, B=64.000
+		Epoch [11/50], Iter [80/129], Loss: total=0.732, box=55.171, obj=895.177, noobj=878.507, cls=37.374, num_pos=246.000, num_neg=681162.000, B=64.000
+		Epoch [11/50], Iter [120/129], Loss: total=0.702, box=37.792, obj=889.103, noobj=873.110, cls=36.211, num_pos=196.000, num_neg=681212.000, B=64.000
+		Learning Rate for this epoch: 8.854e-04
+		Validation Loss: 0.7424
+		Updating best val loss: 0.74241
+		
+		Starting epoch 12 / 50
+		Epoch [12/50], Iter [40/129], Loss: total=0.459, box=17.711, obj=737.155, noobj=729.272, cls=19.972, num_pos=148.000, num_neg=681260.000, B=64.000
+		Epoch [12/50], Iter [80/129], Loss: total=0.641, box=34.576, obj=869.935, noobj=853.447, cls=34.080, num_pos=203.000, num_neg=681205.000, B=64.000
+		Epoch [12/50], Iter [120/129], Loss: total=0.490, box=22.385, obj=779.622, noobj=769.553, cls=19.037, num_pos=163.000, num_neg=681245.000, B=64.000
+		Learning Rate for this epoch: 8.646e-04
+		Validation Loss: 0.7466
+		
+		Starting epoch 13 / 50
+		Epoch [13/50], Iter [40/129], Loss: total=0.530, box=21.437, obj=820.575, noobj=812.963, cls=24.142, num_pos=151.000, num_neg=681257.000, B=64.000
+		Epoch [13/50], Iter [80/129], Loss: total=0.599, box=40.109, obj=783.050, noobj=765.248, cls=29.330, num_pos=233.000, num_neg=681175.000, B=64.000
+		Epoch [13/50], Iter [120/129], Loss: total=0.742, box=52.551, obj=781.971, noobj=760.170, cls=48.503, num_pos=256.000, num_neg=681152.000, B=64.000
+		Learning Rate for this epoch: 8.424e-04
+		Validation Loss: 0.7489
+		
+		Starting epoch 14 / 50
+		Epoch [14/50], Iter [40/129], Loss: total=0.607, box=33.768, obj=818.090, noobj=807.821, cls=35.707, num_pos=203.000, num_neg=681205.000, B=64.000
+		Epoch [14/50], Iter [80/129], Loss: total=0.675, box=43.859, obj=756.497, noobj=737.029, cls=31.337, num_pos=221.000, num_neg=681187.000, B=64.000
+		Epoch [14/50], Iter [120/129], Loss: total=0.603, box=34.704, obj=756.936, noobj=740.685, cls=28.262, num_pos=204.000, num_neg=681204.000, B=64.000
+		Learning Rate for this epoch: 8.189e-04
+		Validation Loss: 0.7386
+		Updating best val loss: 0.73856
+		
+		Starting epoch 15 / 50
+		Epoch [15/50], Iter [40/129], Loss: total=0.555, box=27.282, obj=730.149, noobj=720.483, cls=30.765, num_pos=184.000, num_neg=681224.000, B=64.000
+		Epoch [15/50], Iter [80/129], Loss: total=0.556, box=29.849, obj=902.369, noobj=889.601, cls=20.604, num_pos=183.000, num_neg=681225.000, B=64.000
+		Epoch [15/50], Iter [120/129], Loss: total=0.526, box=34.402, obj=769.853, noobj=756.271, cls=22.647, num_pos=220.000, num_neg=681188.000, B=64.000
+		Learning Rate for this epoch: 7.941e-04
+		Validation Loss: 0.7322
+		Updating best val loss: 0.73221
+		
+		Evaluating on validation set...
+		---Evaluate model on validation samples---
+		100%|██████████| 60/60 [00:41<00:00,  1.44it/s]
+		0.36901 AP of class aeroplane
+		0.24815 AP of class bicycle
+		0.25129 AP of class bird
+		0.14720 AP of class boat
+		0.02141 AP of class bottle
+		0.36247 AP of class bus
+		0.36741 AP of class car
+		0.48245 AP of class cat
+		0.11026 AP of class chair
+		0.13753 AP of class cow
+		0.38653 AP of class diningtable
+		0.39823 AP of class dog
+		0.46489 AP of class horse
+		0.37245 AP of class motorbike
+		0.51977 AP of class person
+		0.04416 AP of class pottedplant
+		0.07572 AP of class sheep
+		0.18839 AP of class sofa
+		0.50015 AP of class train
+		0.14631 AP of class tvmonitor
+		--- MAP: 0.27969 ---
+		Epoch 15, mAP: 0.2797
+		
+		Starting epoch 16 / 50
+		Epoch [16/50], Iter [40/129], Loss: total=0.463, box=24.831, obj=788.599, noobj=780.136, cls=18.150, num_pos=181.000, num_neg=681227.000, B=64.000
+		Epoch [16/50], Iter [80/129], Loss: total=0.527, box=30.449, obj=800.545, noobj=790.018, cls=18.220, num_pos=185.000, num_neg=681223.000, B=64.000
+		Epoch [16/50], Iter [120/129], Loss: total=0.490, box=22.929, obj=885.041, noobj=878.576, cls=20.618, num_pos=163.000, num_neg=681245.000, B=64.000
+		Learning Rate for this epoch: 7.681e-04
+		Validation Loss: 0.7218
+		Updating best val loss: 0.72181
+		
+		Starting epoch 17 / 50
+		Epoch [17/50], Iter [40/129], Loss: total=0.469, box=24.138, obj=647.661, noobj=637.158, cls=20.753, num_pos=183.000, num_neg=681225.000, B=64.000
+		Epoch [17/50], Iter [80/129], Loss: total=0.508, box=33.068, obj=794.103, noobj=780.894, cls=20.181, num_pos=217.000, num_neg=681191.000, B=64.000
+		Epoch [17/50], Iter [120/129], Loss: total=0.536, box=27.978, obj=691.981, noobj=683.062, cls=23.178, num_pos=176.000, num_neg=681232.000, B=64.000
+		Learning Rate for this epoch: 7.411e-04
+		Validation Loss: 0.7356
+		
+		Starting epoch 18 / 50
+		Epoch [18/50], Iter [40/129], Loss: total=0.420, box=23.065, obj=669.937, noobj=662.897, cls=15.050, num_pos=177.000, num_neg=681231.000, B=64.000
+		Epoch [18/50], Iter [80/129], Loss: total=0.457, box=24.245, obj=708.423, noobj=699.562, cls=14.475, num_pos=170.000, num_neg=681238.000, B=64.000
+		Epoch [18/50], Iter [120/129], Loss: total=0.485, box=24.218, obj=634.062, noobj=623.577, cls=21.553, num_pos=178.000, num_neg=681230.000, B=64.000
+		Learning Rate for this epoch: 7.132e-04
+		Validation Loss: 0.7163
+		Updating best val loss: 0.71626
+		
+		Starting epoch 19 / 50
+		Epoch [19/50], Iter [40/129], Loss: total=0.499, box=32.365, obj=663.363, noobj=649.467, cls=26.512, num_pos=231.000, num_neg=681177.000, B=64.000
+		Epoch [19/50], Iter [80/129], Loss: total=0.518, box=31.464, obj=822.499, noobj=813.374, cls=22.468, num_pos=201.000, num_neg=681207.000, B=64.000
+		Epoch [19/50], Iter [120/129], Loss: total=0.432, box=27.519, obj=690.325, noobj=682.090, cls=15.109, num_pos=200.000, num_neg=681208.000, B=64.000
+		Learning Rate for this epoch: 6.844e-04
+		Validation Loss: 0.7093
+		Updating best val loss: 0.70930
+		
+		Starting epoch 20 / 50
+		Epoch [20/50], Iter [40/129], Loss: total=0.421, box=20.865, obj=631.549, noobj=623.004, cls=15.964, num_pos=170.000, num_neg=681238.000, B=64.000
+		Epoch [20/50], Iter [80/129], Loss: total=0.473, box=24.913, obj=741.643, noobj=733.385, cls=23.237, num_pos=188.000, num_neg=681220.000, B=64.000
+		Epoch [20/50], Iter [120/129], Loss: total=0.462, box=31.065, obj=684.352, noobj=675.179, cls=17.739, num_pos=212.000, num_neg=681196.000, B=64.000
+		Learning Rate for this epoch: 6.549e-04
+		Validation Loss: 0.7059
+		Updating best val loss: 0.70591
+		
+		Evaluating on validation set...
+		---Evaluate model on validation samples---
+		100%|██████████| 60/60 [00:41<00:00,  1.45it/s]
+		0.39764 AP of class aeroplane
+		0.30748 AP of class bicycle
+		0.26954 AP of class bird
+		0.17133 AP of class boat
+		0.04397 AP of class bottle
+		0.39596 AP of class bus
+		0.42603 AP of class car
+		0.63632 AP of class cat
+		0.16900 AP of class chair
+		0.08888 AP of class cow
+		0.44790 AP of class diningtable
+		0.55170 AP of class dog
+		0.46741 AP of class horse
+		0.36952 AP of class motorbike
+		0.50467 AP of class person
+		0.14336 AP of class pottedplant
+		0.11456 AP of class sheep
+		0.33163 AP of class sofa
+		0.54824 AP of class train
+		0.28516 AP of class tvmonitor
+		--- MAP: 0.33351 ---
+		Epoch 20, mAP: 0.3335
+		
+		Starting epoch 21 / 50
+		Epoch [21/50], Iter [40/129], Loss: total=0.377, box=17.276, obj=635.509, noobj=630.096, cls=13.667, num_pos=154.000, num_neg=681254.000, B=64.000
+		Epoch [21/50], Iter [80/129], Loss: total=0.407, box=20.535, obj=617.939, noobj=609.559, cls=15.179, num_pos=172.000, num_neg=681236.000, B=64.000
+		Epoch [21/50], Iter [120/129], Loss: total=0.426, box=20.425, obj=701.457, noobj=695.206, cls=15.451, num_pos=159.000, num_neg=681249.000, B=64.000
+		Learning Rate for this epoch: 6.247e-04
+		Validation Loss: 0.7116
+		
+		Starting epoch 22 / 50
+		Epoch [22/50], Iter [40/129], Loss: total=0.366, box=18.192, obj=608.640, noobj=600.699, cls=12.720, num_pos=170.000, num_neg=681238.000, B=64.000
+		Epoch [22/50], Iter [80/129], Loss: total=0.363, box=18.224, obj=619.217, noobj=614.326, cls=13.009, num_pos=163.000, num_neg=681245.000, B=64.000
+		Epoch [22/50], Iter [120/129], Loss: total=0.428, box=23.395, obj=575.722, noobj=568.493, cls=16.961, num_pos=178.000, num_neg=681230.000, B=64.000
+		Learning Rate for this epoch: 5.941e-04
+		Validation Loss: 0.7101
+		
+		Starting epoch 23 / 50
+		Epoch [23/50], Iter [40/129], Loss: total=0.421, box=20.598, obj=565.799, noobj=558.702, cls=18.497, num_pos=170.000, num_neg=681238.000, B=64.000
+		Epoch [23/50], Iter [80/129], Loss: total=0.434, box=25.768, obj=603.166, noobj=595.530, cls=15.906, num_pos=187.000, num_neg=681221.000, B=64.000
+		Epoch [23/50], Iter [120/129], Loss: total=0.369, box=19.207, obj=524.402, noobj=515.996, cls=11.579, num_pos=170.000, num_neg=681238.000, B=64.000
+		Learning Rate for this epoch: 5.631e-04
+		Validation Loss: 0.7093
+		
+		Starting epoch 24 / 50
+		Epoch [24/50], Iter [40/129], Loss: total=0.385, box=20.741, obj=680.540, noobj=674.682, cls=11.420, num_pos=167.000, num_neg=681241.000, B=64.000
+		Epoch [24/50], Iter [80/129], Loss: total=0.317, box=13.034, obj=647.051, noobj=642.721, cls=11.404, num_pos=144.000, num_neg=681264.000, B=64.000
+		Epoch [24/50], Iter [120/129], Loss: total=0.429, box=25.041, obj=563.637, noobj=554.584, cls=18.670, num_pos=196.000, num_neg=681212.000, B=64.000
+		Learning Rate for this epoch: 5.319e-04
+		Validation Loss: 0.7099
+		
+		Starting epoch 25 / 50
+		Epoch [25/50], Iter [40/129], Loss: total=0.323, box=17.296, obj=513.303, noobj=506.978, cls=10.015, num_pos=171.000, num_neg=681237.000, B=64.000
+		Epoch [25/50], Iter [80/129], Loss: total=0.395, box=20.512, obj=616.236, noobj=609.559, cls=12.869, num_pos=166.000, num_neg=681242.000, B=64.000
+		Epoch [25/50], Iter [120/129], Loss: total=0.305, box=15.488, obj=568.317, noobj=564.830, cls=8.048, num_pos=152.000, num_neg=681256.000, B=64.000
+		Learning Rate for this epoch: 5.005e-04
+		Validation Loss: 0.7219
+		
+		Evaluating on validation set...
+		---Evaluate model on validation samples---
+		100%|██████████| 60/60 [00:41<00:00,  1.43it/s]
+		0.45866 AP of class aeroplane
+		0.35785 AP of class bicycle
+		0.36542 AP of class bird
+		0.17920 AP of class boat
+		0.10438 AP of class bottle
+		0.43185 AP of class bus
+		0.48746 AP of class car
+		0.51286 AP of class cat
+		0.21404 AP of class chair
+		0.14390 AP of class cow
+		0.45158 AP of class diningtable
+		0.48859 AP of class dog
+		0.53493 AP of class horse
+		0.39593 AP of class motorbike
+		0.57835 AP of class person
+		0.18000 AP of class pottedplant
+		0.26677 AP of class sheep
+		0.32290 AP of class sofa
+		0.55885 AP of class train
+		0.37895 AP of class tvmonitor
+		--- MAP: 0.37062 ---
+		Epoch 25, mAP: 0.3706
+		
+		Starting epoch 26 / 50
+		Epoch [26/50], Iter [40/129], Loss: total=0.317, box=18.901, obj=442.438, noobj=434.964, cls=7.182, num_pos=178.000, num_neg=681230.000, B=64.000
+		Epoch [26/50], Iter [80/129], Loss: total=0.418, box=26.382, obj=681.352, noobj=672.113, cls=17.068, num_pos=210.000, num_neg=681198.000, B=64.000
+		Epoch [26/50], Iter [120/129], Loss: total=0.360, box=21.184, obj=676.507, noobj=669.778, cls=14.460, num_pos=198.000, num_neg=681210.000, B=64.000
+		Learning Rate for this epoch: 4.691e-04
+		Validation Loss: 0.7393
+		
+		Starting epoch 27 / 50
+		Epoch [27/50], Iter [40/129], Loss: total=0.378, box=21.537, obj=531.017, noobj=526.965, cls=10.678, num_pos=164.000, num_neg=681244.000, B=64.000
+		Epoch [27/50], Iter [80/129], Loss: total=0.415, box=32.045, obj=642.772, noobj=633.759, cls=16.847, num_pos=243.000, num_neg=681165.000, B=64.000
+		Epoch [27/50], Iter [120/129], Loss: total=0.332, box=23.184, obj=485.244, noobj=475.841, cls=10.028, num_pos=218.000, num_neg=681190.000, B=64.000
+		Learning Rate for this epoch: 4.379e-04
+		Validation Loss: 0.7210
+		
+		Starting epoch 28 / 50
+		Epoch [28/50], Iter [40/129], Loss: total=0.291, box=15.327, obj=544.724, noobj=540.189, cls=7.798, num_pos=162.000, num_neg=681246.000, B=64.000
+		Epoch [28/50], Iter [80/129], Loss: total=0.364, box=23.412, obj=522.082, noobj=512.632, cls=9.609, num_pos=197.000, num_neg=681211.000, B=64.000
+		Epoch [28/50], Iter [120/129], Loss: total=0.336, box=22.455, obj=540.365, noobj=531.167, cls=10.045, num_pos=212.000, num_neg=681196.000, B=64.000
+		Learning Rate for this epoch: 4.069e-04
+		Validation Loss: 0.7196
+		
+		Starting epoch 29 / 50
+		Epoch [29/50], Iter [40/129], Loss: total=0.329, box=19.928, obj=640.375, noobj=634.926, cls=9.986, num_pos=188.000, num_neg=681220.000, B=64.000
+		Epoch [29/50], Iter [80/129], Loss: total=0.343, box=22.298, obj=530.816, noobj=521.116, cls=7.411, num_pos=197.000, num_neg=681211.000, B=64.000
+		Epoch [29/50], Iter [120/129], Loss: total=0.327, box=18.393, obj=489.361, noobj=482.628, cls=8.866, num_pos=173.000, num_neg=681235.000, B=64.000
+		Learning Rate for this epoch: 3.763e-04
+		Validation Loss: 0.7286
+		
+		Starting epoch 30 / 50
+		Epoch [30/50], Iter [40/129], Loss: total=0.294, box=15.693, obj=551.302, noobj=546.333, cls=9.901, num_pos=174.000, num_neg=681234.000, B=64.000
+		Epoch [30/50], Iter [80/129], Loss: total=0.363, box=21.820, obj=666.393, noobj=660.854, cls=13.316, num_pos=192.000, num_neg=681216.000, B=64.000
+		Epoch [30/50], Iter [120/129], Loss: total=0.252, box=13.730, obj=509.706, noobj=504.981, cls=7.044, num_pos=173.000, num_neg=681235.000, B=64.000
+		Learning Rate for this epoch: 3.461e-04
+		Validation Loss: 0.7289
+		
+		Evaluating on validation set...
+		---Evaluate model on validation samples---
+		100%|██████████| 60/60 [00:41<00:00,  1.45it/s]
+		0.49256 AP of class aeroplane
+		0.40511 AP of class bicycle
+		0.40841 AP of class bird
+		0.16823 AP of class boat
+		0.10792 AP of class bottle
+		0.42105 AP of class bus
+		0.54942 AP of class car
+		0.70869 AP of class cat
+		0.22243 AP of class chair
+		0.16231 AP of class cow
+		0.41531 AP of class diningtable
+		0.59176 AP of class dog
+		0.55094 AP of class horse
+		0.40263 AP of class motorbike
+		0.59482 AP of class person
+		0.20579 AP of class pottedplant
+		0.27865 AP of class sheep
+		0.37897 AP of class sofa
+		0.57120 AP of class train
+		0.45717 AP of class tvmonitor
+		--- MAP: 0.40467 ---
+		Epoch 30, mAP: 0.4047
+		
+		Starting epoch 31 / 50
+		Epoch [31/50], Iter [40/129], Loss: total=0.296, box=17.836, obj=494.808, noobj=487.456, cls=7.982, num_pos=190.000, num_neg=681218.000, B=64.000
+		Epoch [31/50], Iter [80/129], Loss: total=0.282, box=15.498, obj=501.521, noobj=494.856, cls=10.401, num_pos=189.000, num_neg=681219.000, B=64.000
+		Epoch [31/50], Iter [120/129], Loss: total=0.232, box=13.384, obj=362.207, noobj=355.785, cls=4.461, num_pos=176.000, num_neg=681232.000, B=64.000
+		Learning Rate for this epoch: 3.166e-04
+		Validation Loss: 0.7369
+		
+		Starting epoch 32 / 50
+		Epoch [32/50], Iter [40/129], Loss: total=0.258, box=14.580, obj=433.760, noobj=429.098, cls=5.284, num_pos=165.000, num_neg=681243.000, B=64.000
+		Epoch [32/50], Iter [80/129], Loss: total=0.314, box=19.743, obj=581.015, noobj=574.040, cls=9.409, num_pos=199.000, num_neg=681209.000, B=64.000
+		Epoch [32/50], Iter [120/129], Loss: total=0.280, box=16.631, obj=454.014, noobj=449.796, cls=6.769, num_pos=172.000, num_neg=681236.000, B=64.000
+		Learning Rate for this epoch: 2.878e-04
+		Validation Loss: 0.7434
+		
+		Starting epoch 33 / 50
+		Epoch [33/50], Iter [40/129], Loss: total=0.279, box=15.644, obj=493.985, noobj=487.947, cls=8.260, num_pos=180.000, num_neg=681228.000, B=64.000
+		Epoch [33/50], Iter [80/129], Loss: total=0.254, box=13.206, obj=478.547, noobj=474.134, cls=6.591, num_pos=162.000, num_neg=681246.000, B=64.000
+		Epoch [33/50], Iter [120/129], Loss: total=0.256, box=11.315, obj=432.603, noobj=429.613, cls=6.420, num_pos=134.000, num_neg=681274.000, B=64.000
+		Learning Rate for this epoch: 2.599e-04
+		Validation Loss: 0.7451
+		
+		Starting epoch 34 / 50
+		Epoch [34/50], Iter [40/129], Loss: total=0.286, box=18.867, obj=486.154, noobj=479.358, cls=7.736, num_pos=203.000, num_neg=681205.000, B=64.000
+		Epoch [34/50], Iter [80/129], Loss: total=0.263, box=17.602, obj=497.537, noobj=490.864, cls=6.139, num_pos=206.000, num_neg=681202.000, B=64.000
+		Epoch [34/50], Iter [120/129], Loss: total=0.266, box=18.859, obj=450.069, noobj=444.276, cls=5.714, num_pos=206.000, num_neg=681202.000, B=64.000
+		Learning Rate for this epoch: 2.329e-04
+		Validation Loss: 0.7564
+		
+		Starting epoch 35 / 50
+		Epoch [35/50], Iter [40/129], Loss: total=0.277, box=16.248, obj=421.807, noobj=416.242, cls=6.859, num_pos=176.000, num_neg=681232.000, B=64.000
+		Epoch [35/50], Iter [80/129], Loss: total=0.302, box=20.136, obj=496.914, noobj=489.348, cls=8.351, num_pos=206.000, num_neg=681202.000, B=64.000
+		Epoch [35/50], Iter [120/129], Loss: total=0.248, box=13.910, obj=450.038, noobj=444.092, cls=6.430, num_pos=179.000, num_neg=681229.000, B=64.000
+		Learning Rate for this epoch: 2.069e-04
+		Validation Loss: 0.7587
+		
+		Evaluating on validation set...
+		---Evaluate model on validation samples---
+		100%|██████████| 60/60 [00:41<00:00,  1.43it/s]
+		0.55311 AP of class aeroplane
+		0.42983 AP of class bicycle
+		0.47042 AP of class bird
+		0.19553 AP of class boat
+		0.10428 AP of class bottle
+		0.44905 AP of class bus
+		0.54339 AP of class car
+		0.70391 AP of class cat
+		0.22462 AP of class chair
+		0.27323 AP of class cow
+		0.44275 AP of class diningtable
+		0.61191 AP of class dog
+		0.58970 AP of class horse
+		0.47393 AP of class motorbike
+		0.58780 AP of class person
+		0.23203 AP of class pottedplant
+		0.38217 AP of class sheep
+		0.37927 AP of class sofa
+		0.57693 AP of class train
+		0.49048 AP of class tvmonitor
+		--- MAP: 0.43572 ---
+		Epoch 35, mAP: 0.4357
+		
+		Starting epoch 36 / 50
+		Epoch [36/50], Iter [40/129], Loss: total=0.203, box=10.700, obj=415.957, noobj=412.394, cls=4.742, num_pos=162.000, num_neg=681246.000, B=64.000
+		Epoch [36/50], Iter [80/129], Loss: total=0.269, box=16.224, obj=456.673, noobj=452.287, cls=6.382, num_pos=176.000, num_neg=681232.000, B=64.000
+		Epoch [36/50], Iter [120/129], Loss: total=0.232, box=12.315, obj=398.939, noobj=393.459, cls=8.260, num_pos=182.000, num_neg=681226.000, B=64.000
+		Learning Rate for this epoch: 1.821e-04
+		Validation Loss: 0.7671
+		
+		Starting epoch 37 / 50
+		Epoch [37/50], Iter [40/129], Loss: total=0.219, box=11.023, obj=412.367, noobj=409.623, cls=6.080, num_pos=154.000, num_neg=681254.000, B=64.000
+		Epoch [37/50], Iter [80/129], Loss: total=0.262, box=12.899, obj=421.355, noobj=415.261, cls=7.571, num_pos=163.000, num_neg=681245.000, B=64.000
+		Epoch [37/50], Iter [120/129], Loss: total=0.230, box=15.369, obj=447.170, noobj=441.236, cls=5.436, num_pos=207.000, num_neg=681201.000, B=64.000
+		Learning Rate for this epoch: 1.586e-04
+		Validation Loss: 0.7754
+		
+		Starting epoch 38 / 50
+		Epoch [38/50], Iter [40/129], Loss: total=0.161, box=8.615, obj=413.981, noobj=412.036, cls=2.248, num_pos=150.000, num_neg=681258.000, B=64.000
+		Epoch [38/50], Iter [80/129], Loss: total=0.207, box=9.673, obj=418.650, noobj=416.483, cls=5.543, num_pos=143.000, num_neg=681265.000, B=64.000
+		Epoch [38/50], Iter [120/129], Loss: total=0.251, box=13.842, obj=415.155, noobj=409.517, cls=7.419, num_pos=177.000, num_neg=681231.000, B=64.000
+		Learning Rate for this epoch: 1.364e-04
+		Validation Loss: 0.7709
+		
+		Starting epoch 39 / 50
+		Epoch [39/50], Iter [40/129], Loss: total=0.229, box=12.691, obj=455.949, noobj=451.949, cls=7.795, num_pos=181.000, num_neg=681227.000, B=64.000
+		Epoch [39/50], Iter [80/129], Loss: total=0.253, box=14.855, obj=477.503, noobj=470.809, cls=7.232, num_pos=193.000, num_neg=681215.000, B=64.000
+		Epoch [39/50], Iter [120/129], Loss: total=0.212, box=11.087, obj=409.988, noobj=406.915, cls=5.111, num_pos=157.000, num_neg=681251.000, B=64.000
+		Learning Rate for this epoch: 1.156e-04
+		Validation Loss: 0.7775
+		
+		Starting epoch 40 / 50
+		Epoch [40/50], Iter [40/129], Loss: total=0.221, box=12.893, obj=394.611, noobj=391.186, cls=5.292, num_pos=171.000, num_neg=681237.000, B=64.000
+		Epoch [40/50], Iter [80/129], Loss: total=0.207, box=11.748, obj=430.490, noobj=426.627, cls=4.722, num_pos=173.000, num_neg=681235.000, B=64.000
+		Epoch [40/50], Iter [120/129], Loss: total=0.216, box=11.200, obj=417.358, noobj=412.639, cls=7.667, num_pos=179.000, num_neg=681229.000, B=64.000
+		Learning Rate for this epoch: 9.640e-05
+		Validation Loss: 0.7924
+		
+		Evaluating on validation set...
+		---Evaluate model on validation samples---
+		100%|██████████| 60/60 [00:41<00:00,  1.44it/s]
+		0.55890 AP of class aeroplane
+		0.41855 AP of class bicycle
+		0.46400 AP of class bird
+		0.21358 AP of class boat
+		0.11059 AP of class bottle
+		0.44828 AP of class bus
+		0.49670 AP of class car
+		0.71772 AP of class cat
+		0.23982 AP of class chair
+		0.29982 AP of class cow
+		0.47224 AP of class diningtable
+		0.61540 AP of class dog
+		0.56940 AP of class horse
+		0.47143 AP of class motorbike
+		0.59637 AP of class person
+		0.21546 AP of class pottedplant
+		0.43304 AP of class sheep
+		0.38514 AP of class sofa
+		0.58927 AP of class train
+		0.49589 AP of class tvmonitor
+		--- MAP: 0.44058 ---
+		Epoch 40, mAP: 0.4406
+		
+		Starting epoch 41 / 50
+		Epoch [41/50], Iter [40/129], Loss: total=0.263, box=18.893, obj=421.486, noobj=413.841, cls=6.834, num_pos=221.000, num_neg=681187.000, B=64.000
+		Epoch [41/50], Iter [80/129], Loss: total=0.266, box=16.608, obj=445.525, noobj=438.052, cls=13.697, num_pos=230.000, num_neg=681178.000, B=64.000
+		Epoch [41/50], Iter [120/129], Loss: total=0.223, box=14.432, obj=406.675, noobj=399.111, cls=7.911, num_pos=226.000, num_neg=681182.000, B=64.000
+		Learning Rate for this epoch: 7.876e-05
+		Validation Loss: 0.7913
+		
+		Starting epoch 42 / 50
+		Epoch [42/50], Iter [40/129], Loss: total=0.180, box=10.033, obj=415.503, noobj=411.052, cls=4.927, num_pos=187.000, num_neg=681221.000, B=64.000
+		Epoch [42/50], Iter [80/129], Loss: total=0.283, box=20.862, obj=459.000, noobj=452.248, cls=6.889, num_pos=218.000, num_neg=681190.000, B=64.000
+		Epoch [42/50], Iter [120/129], Loss: total=0.186, box=11.306, obj=406.066, noobj=403.209, cls=2.483, num_pos=168.000, num_neg=681240.000, B=64.000
+		Learning Rate for this epoch: 6.278e-05
+		Validation Loss: 0.8051
+		
+		Starting epoch 43 / 50
+		Epoch [43/50], Iter [40/129], Loss: total=0.179, box=11.067, obj=457.611, noobj=453.088, cls=4.488, num_pos=206.000, num_neg=681202.000, B=64.000
+		Epoch [43/50], Iter [80/129], Loss: total=0.220, box=10.038, obj=437.707, noobj=434.694, cls=6.293, num_pos=146.000, num_neg=681262.000, B=64.000
+		Epoch [43/50], Iter [120/129], Loss: total=0.206, box=12.470, obj=409.775, noobj=406.339, cls=6.810, num_pos=192.000, num_neg=681216.000, B=64.000
+		Learning Rate for this epoch: 4.854e-05
+		Validation Loss: 0.8103
+		
+		Starting epoch 44 / 50
+		Epoch [44/50], Iter [40/129], Loss: total=0.182, box=11.212, obj=422.084, noobj=417.976, cls=4.401, num_pos=196.000, num_neg=681212.000, B=64.000
+		Epoch [44/50], Iter [80/129], Loss: total=0.194, box=9.804, obj=359.209, noobj=354.272, cls=4.498, num_pos=164.000, num_neg=681244.000, B=64.000
+		Epoch [44/50], Iter [120/129], Loss: total=0.182, box=11.429, obj=387.136, noobj=383.388, cls=4.038, num_pos=191.000, num_neg=681217.000, B=64.000
+		Learning Rate for this epoch: 3.608e-05
+		Validation Loss: 0.8123
+		
+		Starting epoch 45 / 50
+		Epoch [45/50], Iter [40/129], Loss: total=0.175, box=9.793, obj=419.089, noobj=415.669, cls=4.393, num_pos=179.000, num_neg=681229.000, B=64.000
+		Epoch [45/50], Iter [80/129], Loss: total=0.219, box=11.683, obj=397.977, noobj=394.018, cls=7.563, num_pos=176.000, num_neg=681232.000, B=64.000
+		Epoch [45/50], Iter [120/129], Loss: total=0.204, box=13.512, obj=436.747, noobj=431.048, cls=4.998, num_pos=213.000, num_neg=681195.000, B=64.000
+		Learning Rate for this epoch: 2.545e-05
+		Validation Loss: 0.8189
+		
+		Evaluating on validation set...
+		---Evaluate model on validation samples---
+		100%|██████████| 60/60 [00:41<00:00,  1.45it/s]
+		0.54682 AP of class aeroplane
+		0.42295 AP of class bicycle
+		0.48814 AP of class bird
+		0.21786 AP of class boat
+		0.11499 AP of class bottle
+		0.44115 AP of class bus
+		0.49806 AP of class car
+		0.70180 AP of class cat
+		0.23458 AP of class chair
+		0.30787 AP of class cow
+		0.46122 AP of class diningtable
+		0.60973 AP of class dog
+		0.56910 AP of class horse
+		0.49635 AP of class motorbike
+		0.57549 AP of class person
+		0.23886 AP of class pottedplant
+		0.42090 AP of class sheep
+		0.37688 AP of class sofa
+		0.58900 AP of class train
+		0.50019 AP of class tvmonitor
+		--- MAP: 0.44060 ---
+		Epoch 45, mAP: 0.4406
+		
+		Starting epoch 46 / 50
