@@ -195,7 +195,7 @@ class DetectionLossAdvanced(nn.Module):
                  varifocal_gamma=2.0,
                  lambda_coord=2.0,
                  lambda_obj=1.0,
-                 lambda_noobj=0.075,
+                 lambda_noobj=0.2,
                  lambda_class=1.0):
         super().__init__()
         self.anchors = anchors

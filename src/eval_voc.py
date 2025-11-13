@@ -152,7 +152,7 @@ def evaluate(model, eval_loader):
         # Move to GPU if available
         images = images.to(device)
         with torch.no_grad():
-            detections = model.inference(images, conf_thres=0.02, nms_thres=0.7)
+            detections = model.inference(images, conf_thres=0.3, nms_thres=0.4)
 
         # Process each image in the batch
         for i in range(len(images)):
