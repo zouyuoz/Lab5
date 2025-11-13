@@ -213,4 +213,4 @@ def evaluate(model, eval_loader):
         global_idx += len(images)
 
     aps = voc_eval(preds, targets, VOC_CLASSES=VOC_CLASSES)
-    return aps
+    return aps 
